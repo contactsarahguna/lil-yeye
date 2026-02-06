@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>For You 🤍</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: radial-gradient(circle at top, #fff0f5, #f6b1c3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      padding: 32px;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      width: 340px;
+      position: relative;
+      z-index: 2;
+    }
+
+    button {
+      background: #ff5c8a;
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.08);
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid #ddd;
+      width: 80%;
+      text-align: center;
+    }
+
+    .hidden { display: none; }
+
+    .message {
+      font-size: 20px;
+      margin-top: 20px;
+      animation: pop 0.6s ease;
+    }
+
+    .punish {
+      font-size: 15px;
+      margin-top: 15px;
+      animation: shake 0.4s;
+      color: #ff3366;
+    }
+
+    .timer {
+      font-size: 14px;
+      margin-top: 10px;
+      color: #999;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    /* floating hearts & sparkles */
+    .float {
+      position: absolute;
+      bottom: -20px;
+      animation: floatUp 6s infinite;
+      opacity: 0.85;
+      font-size: 20px;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translateY(-110vh); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  const emojis = ["🤍","💗","✨","💞","🥺","💫"];
+  setInterval(() => {
+    const e = document.createElement("span");
+    e.className = "float";
+    e.style.left = Math.random() * 100 + "vw";
+    e.style.fontSize = (16 + Math.random() * 22) + "px";
+    e.style.animationDuration = (4 + Math.random() * 4) + "s";
+    e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    document.body.appendChild(e);
+    setTimeout(() => e.remove(), 8000);
+  }, 500);
+</script>
+
+<div class="card">
+  <div id="step1">
+    <p>🔒 fragile feelings inside</p>
+    <button onclick="askQuestion()">💌 Open from Sarah</button>
+  </div>
+
+  <div id="step2" class="hidden">
+    <p>🤍 please don’t mess this up</p>
+    <p><strong>Who’s your little yeye?</strong></p>
+    <input type="text" id="answer" placeholder="type carefully…" />
+    <br><br>
+    <button onclick="checkAnswer()">Answer 🫶</button>
+    <div id="punish" class="punish hidden"></div>
+    <div id="timer" class="timer hidden"></div>
+  </div>
+
+  <div id="final" class="hidden message">
+    🥹🤍  
+    <br><br>
+    Let me be your only one  
+    <br>
+    I don’t want anyone else’s place  
+    <br>
+    I just want *mine*  
+    <br><br>
+    💞♾️
+  </div>
+</div>
+
+<script>
+  let attempts = 0;
+  let countdown;
+
+  function askQuestion() {
+    document.getElementById("step1").classList.add("hidden");
+    document.getElementById("step2").classList.remove("hidden");
+  }
+
+  function startTimer() {
+    let time = 5;
+    const timer = document.getElementById("timer");
+    timer.classList.remove("hidden");
+    timer.innerHTML = `⏳ last chance in ${time}…`;
+
+    countdown = setInterval(() => {
+      time--;
+      timer.innerHTML = `⏳ last chance in ${time}…`;
+      if (time <= 0) clearInterval(countdown);
+    }, 1000);
+  }
+
+  function checkAnswer() {
+    const answer = document.getElementById("answer").value.toLowerCase();
+    const punish = document.getElementById("punish");
+
+    if (answer.includes("sarah")) {
+      clearInterval(countdown);
+      document.getElementById("step2").classList.add("hidden");
+      document.getElementById("final").classList.remove("hidden");
+    } else {
+      attempts++;
+      punish.classList.remove("hidden");
+
+      if (attempts === 1) {
+        punish.innerHTML = "❌ wrong…<br>that kind of hurt a little 🥺";
+      } else if (attempts === 2) {
+        punish.innerHTML = "❌ still wrong…<br>now my chest feels tight 💔";
+        startTimer();
+      } else {
+        punish.innerHTML = "okay… last try…<br>be gentle with my heart 🤍";
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
